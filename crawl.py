@@ -2,6 +2,42 @@ from bs4 import BeautifulSoup
 import requests
 import math
 import time
+from peewee import *
+import datetime
+
+db = SqliteDatabase('my_database.db')
+
+
+class BaseModel(Model):
+    class Meta:
+        database = db
+
+
+class App(BaseModel):
+    id = IntegerField(unique=True)
+    name = CharField()
+
+
+class Item(BaseModel):
+    app = ForeignKeyField(App)
+    name = CharField()
+    tag = CharField()
+
+
+class Skin(BaseModel):
+    item = ForeignKeyField(Item)
+    name = CharField()
+
+
+class Price(BaseModel):
+    skin = ForeignKeyField(Skin)
+    measured = DateTimeField(default=datetime.datetime.now)
+    value = FloatField()
+    currency = CharField()
+
+
+db.connect()
+db.create_tables([App, Item, Skin, Price])
 
 
 def getItemsByAppId(appId):
@@ -44,19 +80,20 @@ import csv
 
 
 def getItemTypes(apppId):
-    #BASE_URL = 'http://steamcommunity.com/market/search?appid={0}'
+    # BASE_URL = 'http://steamcommunity.com/market/search?appid={0}'
 
-    #r = requests.get(BASE_URL.format(apppId))
-    #response = r.text
+    # r = requests.get(BASE_URL.format(apppId))
+    # response = r.text
     # print(response)
-    #soup = BeautifulSoup(response, 'html.parser')
-    #price = soup.find_all('select')
+    # soup = BeautifulSoup(response, 'html.parser')
+    # price = soup.find_all('select')
     # print(price)
     if apppId == 252490:
         with open('tag_252490.csv', newline='') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
                 print(','.join(row))
+
 
             # getItemsByAppId(252490)
 getItemTypes(252490)
