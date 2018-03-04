@@ -28,6 +28,10 @@ class Item(BaseModel):
 class Skin(BaseModel):
     item = ForeignKeyField(Item)
     name = CharField()
+    # TODO remove image size from url
+    thumbnail = CharField()
+    # TODO remove image size from url
+    image = CharField(null=True)
 
     class Meta:
         indexes = (
@@ -39,7 +43,8 @@ class Price(BaseModel):
     id = PrimaryKeyField()
     skin = ForeignKeyField(Skin)
     measured = DateTimeField(default=datetime.datetime.now)
-    value = FloatField()
+    # TODO value to float
+    value = CharField()
     currency = CharField()
 
 
