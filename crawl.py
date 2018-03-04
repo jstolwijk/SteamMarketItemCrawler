@@ -40,4 +40,16 @@ def getItemsByAppId(appId):
         f.close()
 
 
-getItemsByAppId(252490)
+def getItemTypes(apppId):
+    BASE_URL = 'http://steamcommunity.com/market/search?appid={0}'
+
+    r = requests.get(BASE_URL.format(apppId))
+    response = r.text
+    print(response)
+    soup = BeautifulSoup(response, 'html.parser')
+    price = soup.find_all('select')
+    print(price)
+
+
+# getItemsByAppId(252490)
+getItemTypes(252490)
