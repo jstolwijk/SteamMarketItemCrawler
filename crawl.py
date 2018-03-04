@@ -2,42 +2,9 @@ from bs4 import BeautifulSoup
 import requests
 import math
 import time
-from peewee import *
-import datetime
+import database
 
-db = SqliteDatabase('my_database.db')
-
-
-class BaseModel(Model):
-    class Meta:
-        database = db
-
-
-class App(BaseModel):
-    id = IntegerField(unique=True)
-    name = CharField()
-
-
-class Item(BaseModel):
-    app = ForeignKeyField(App)
-    name = CharField()
-    tag = CharField()
-
-
-class Skin(BaseModel):
-    item = ForeignKeyField(Item)
-    name = CharField()
-
-
-class Price(BaseModel):
-    skin = ForeignKeyField(Skin)
-    measured = DateTimeField(default=datetime.datetime.now)
-    value = FloatField()
-    currency = CharField()
-
-
-db.connect()
-db.create_tables([App, Item, Skin, Price])
+database.connect()
 
 
 def getItemsByAppId(appId):
@@ -93,7 +60,6 @@ def getItemTypes(apppId):
             reader = csv.reader(csvfile)
             for row in reader:
                 print(','.join(row))
-
 
             # getItemsByAppId(252490)
 getItemTypes(252490)
