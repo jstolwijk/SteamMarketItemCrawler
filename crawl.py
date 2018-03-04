@@ -3,8 +3,10 @@ import requests
 import math
 import time
 import database
+import pprint
+db = database.connect()
 
-database.connect()
+rust = database.App.get_or_create(id=252490, name="Rust")
 
 
 def getItemsByAppId(appId):
@@ -17,6 +19,8 @@ def getItemsByAppId(appId):
     count = 100
     iterations = math.floor(total_items / count)
 
+    app_items = database.Item.select().where(database.Item.app == appId)
+    print(len(app_items))
     with open("itemnames.txt", "w") as f:
         for i in range(0, iterations + 1):
             r = requests.get(
@@ -46,7 +50,7 @@ def getItemsByAppId(appId):
 import csv
 
 
-def getItemTypes(apppId):
+def getItemTypes(appId):
     # BASE_URL = 'http://steamcommunity.com/market/search?appid={0}'
 
     # r = requests.get(BASE_URL.format(apppId))
@@ -55,11 +59,13 @@ def getItemTypes(apppId):
     # soup = BeautifulSoup(response, 'html.parser')
     # price = soup.find_all('select')
     # print(price)
-    if apppId == 252490:
+    if appId == 252490:
         with open('tag_252490.csv', newline='') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
-                print(','.join(row))
+                database.Item.get_or_create(
+                    app=rust[0].id, name=row[1], tag=row[0])
 
-            # getItemsByAppId(252490)
+
+getItemsByAppId(252490)
 getItemTypes(252490)

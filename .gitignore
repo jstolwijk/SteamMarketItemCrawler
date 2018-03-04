@@ -1,2 +1,4 @@
 my_database.db
 __pycache__
+.vscode/tags
+itemnames.txt

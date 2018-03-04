@@ -10,22 +10,33 @@ class BaseModel(Model):
 
 
 class App(BaseModel):
-    id = IntegerField(unique=True)
+    id = IntegerField(primary_key=True)
     name = CharField()
 
 
 class Item(BaseModel):
-    app = ForeignKeyField(App)
+    app = ForeignKeyField(App, to_field="id")
     name = CharField()
     tag = CharField()
+
+    class Meta:
+        indexes = (
+            (("app", "tag"), True),
+        )
 
 
 class Skin(BaseModel):
     item = ForeignKeyField(Item)
     name = CharField()
 
+    class Meta:
+        indexes = (
+            (("item", "name"), True),
+        )
+
 
 class Price(BaseModel):
+    id = PrimaryKeyField()
     skin = ForeignKeyField(Skin)
     measured = DateTimeField(default=datetime.datetime.now)
     value = FloatField()
@@ -35,3 +46,4 @@ class Price(BaseModel):
 def connect():
     db.connect()
     db.create_tables([App, Item, Skin, Price])
+    return db
