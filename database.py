@@ -1,7 +1,7 @@
 from peewee import *
 import datetime
 
-db = SqliteDatabase('my_database.db')
+db = SqliteDatabase('../RustSkins/database.db')
 
 
 class BaseModel(Model):
