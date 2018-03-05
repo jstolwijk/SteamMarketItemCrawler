@@ -43,8 +43,7 @@ class Price(BaseModel):
     id = PrimaryKeyField()
     skin = ForeignKeyField(Skin)
     measured = DateTimeField(default=datetime.datetime.now)
-    # TODO value to float
-    value = CharField()
+    value = FloatField()
     currency = CharField()
 
 

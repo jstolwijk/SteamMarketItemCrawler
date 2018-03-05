@@ -4,7 +4,7 @@ import math
 import time
 import database
 import csv
-
+import string_utils
 db = database.connect()
 
 rust = database.App.get_or_create(id=252490, name="Rust")
@@ -34,7 +34,8 @@ def getItemSkins(app, item):
             item_name = item_soup.find(
                 "span", class_="market_listing_item_name").text
 
-            price = item_soup.find("span", class_="sale_price").text
+            raw_price = item_soup.find("span", class_="sale_price").text
+            price = string_utils.clean_price(raw_price)
 
             raw_thumbnail = item_soup.find("img")['src']
             thumbnail = raw_thumbnail.replace("/62fx62f", "")
