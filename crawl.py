@@ -36,12 +36,15 @@ def getItemSkins(app, item):
 
             price = item_soup.find("span", class_="sale_price").text
 
-            thumbnail = item_soup.find("img")['src']
+            raw_thumbnail = item_soup.find("img")['src']
+            thumbnail = raw_thumbnail.replace("/62fx62f", "")
 
-            skin = database.Skin.get_or_create(
-                item=item, name=item_name, thumbnail=thumbnail)
+            if len(database.Skin.select().where(database.Skin.name == item_name & database.Skin.item != item)) == 0:
+                skin = database.Skin.get_or_create(
+                    item=item, name=item_name, thumbnail=thumbnail)
 
-            database.Price.create(skin=skin[0], value=price, currency='USD')
+                database.Price.create(
+                    skin=skin[0], value=price, currency='USD')
             count += 1
 
         print('Found {0} items'.format(count))
