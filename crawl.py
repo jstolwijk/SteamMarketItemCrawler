@@ -38,7 +38,7 @@ def getItemSkins(app, item):
             price = string_utils.clean_price(raw_price)
 
             raw_thumbnail = item_soup.find("img")['src']
-            thumbnail = raw_thumbnail.replace("/62fx62f", "")
+            thumbnail = string_utils.clean_url(raw_thumbnail)
 
             if len(database.Skin.select().where(database.Skin.name == item_name & database.Skin.item != item)) == 0:
                 skin = database.Skin.get_or_create(
