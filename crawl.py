@@ -40,12 +40,14 @@ def getItemSkins(app, item):
             raw_thumbnail = item_soup.find("img")['src']
             thumbnail = string_utils.clean_url(raw_thumbnail)
 
-            if len(database.Skin.select().where(database.Skin.name == item_name & database.Skin.item != item)) == 0:
-                skin = database.Skin.get_or_create(
-                    item=item, name=item_name, thumbnail=thumbnail)
+            # TODO: skin can have 2 tag types if 1 is misc
+#            if len(database.Skin.select().where(database.Skin.name == item_name & database.Skin.item != item)) == 0:
 
-                database.Price.create(
-                    skin=skin[0], value=price, currency='USD')
+            skin = database.Skin.get_or_create(
+                item=item, name=item_name, thumbnail=thumbnail)
+
+            database.Price.create(
+                skin=skin[0], value=price, currency='USD')
             count += 1
 
         print('Found {0} items'.format(count))

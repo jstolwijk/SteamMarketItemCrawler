@@ -1,7 +1,8 @@
 from peewee import *
 import datetime
 
-db = SqliteDatabase('../RustSkins/database.db')
+db = MySQLDatabase('steamitems', user='root',
+                   password='mypassword;', port=3306)
 
 
 class BaseModel(Model):
