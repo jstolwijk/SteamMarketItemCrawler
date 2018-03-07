@@ -5,7 +5,7 @@ import os
 if os.environ.get('MYSQL_HOST'):
     HOST = os.environ.get('MYSQL_HOST')
 else:
-    HOST = 'localhost'
+    HOST = '127.0.0.1'
 
 
 db = MySQLDatabase('steamitems', user='root',
