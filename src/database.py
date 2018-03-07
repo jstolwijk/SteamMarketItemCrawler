@@ -1,8 +1,15 @@
 from peewee import *
 import datetime
+import os
+
+if os.environ.get('MYSQL_HOST'):
+    HOST = os.environ.get('MYSQL_HOST')
+else:
+    HOST = 'localhost'
+
 
 db = MySQLDatabase('steamitems', user='root',
-                   password='mypassword;', port=3306)
+                   password='mypassword;', port=3306, host=HOST)
 
 
 class BaseModel(Model):
